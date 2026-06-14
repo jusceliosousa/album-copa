@@ -1,5 +1,9 @@
 window.STICKER_MANIFEST = {
   "g5-e3": {
+    "002": {
+      "file": "002-Equipe.jpeg",
+      "name": "GESIT 53"
+    },
     "003": {
       "file": "003-Leandro.jpeg",
       "name": "Leandro"
