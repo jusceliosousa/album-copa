@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Album de Figurinhas da Copa</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="album-shell" aria-label="Album interativo de figurinhas">
+      <section class="album-topbar">
+        <div class="brand-lockup">
+          <span class="edition">Copa do Mundo 2026</span>
+          <h1>Album de Figurinhas</h1>
+        </div>
+
+        <div class="team-tabs" id="teamTabs" aria-label="Selecionar equipe"></div>
+      </section>
+
+      <section class="album-stage">
+        <button class="nav-button nav-prev" id="prevTeam" type="button" aria-label="Equipe anterior">
+          <span aria-hidden="true">‹</span>
+        </button>
+
+        <article class="album-book" id="albumBook" aria-live="polite">
+          <div class="book-spine" aria-hidden="true"></div>
+
+          <div class="page page-left">
+            <div class="page-stripe"></div>
+            <div class="team-identity">
+              <span class="team-code" id="teamCode">BRA</span>
+              <div>
+                <p class="section-label">Equipe</p>
+                <h2 id="teamName">G5/E2</h2>
+              </div>
+            </div>
+
+            <div class="team-badge" id="teamBadge" aria-hidden="true">BR</div>
+
+            <div class="team-summary">
+              <button class="shield-slot" id="shieldSlot" type="button" aria-label="Figurinha do escudo da equipe">
+                <span class="shield-slot-number" id="shieldNumber">001</span>
+                <span class="shield-slot-emblem" id="shieldEmblem">E2</span>
+                <span class="shield-slot-label" id="shieldLabel">Escudo da equipe</span>
+              </button>
+
+              <div class="team-info">
+                <p id="teamPhrase"></p>
+                <dl>
+                  <div>
+                    <dt>Area</dt>
+                    <dd id="teamGroup"></dd>
+                  </div>
+                  <div>
+                    <dt>Estilo</dt>
+                    <dd id="teamStyle"></dd>
+                  </div>
+                  <div>
+                    <dt>Figurinhas</dt>
+                    <dd id="teamCount"></dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+
+            <div class="sticker-grid sticker-grid-left" id="leftStickerGrid"></div>
+
+            <div class="page-number" id="leftPageNumber">02</div>
+          </div>
+
+          <div class="page page-right">
+            <header class="stickers-header">
+              <div>
+                <p class="section-label">Colecao oficial</p>
+                <h3>Equipe completa</h3>
+              </div>
+              <span id="stickerRange">001-005</span>
+            </header>
+
+            <div class="sticker-grid" id="rightStickerGrid"></div>
+
+            <div class="page-number" id="rightPageNumber">03</div>
+          </div>
+        </article>
+
+        <button class="nav-button nav-next" id="nextTeam" type="button" aria-label="Proxima equipe">
+          <span aria-hidden="true">›</span>
+        </button>
+      </section>
+
+      <section class="album-controls" aria-label="Controles do album">
+        <button class="primary-action" id="shuffleSticker" type="button">Destacar figurinha</button>
+        <div class="progress-track" aria-hidden="true">
+          <span id="progressFill"></span>
+        </div>
+        <p id="pageStatus">Pagina 1 de 3</p>
+      </section>
+    </main>
+
+    <div class="sticker-modal" id="stickerModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalStickerName">
+      <div class="modal-backdrop" data-close-modal></div>
+      <article class="modal-card">
+        <button class="modal-close" type="button" id="closeStickerModal" aria-label="Fechar figurinha ampliada">×</button>
+        <div class="modal-sticker-frame" id="modalStickerFrame"></div>
+        <div class="modal-sticker-info">
+          <span id="modalStickerNumber">001</span>
+          <h2 id="modalStickerName">Figurinha</h2>
+          <p id="modalStickerRole">Equipe</p>
+        </div>
+      </article>
+    </div>
+
+    <script src="figurinhas/manifest.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

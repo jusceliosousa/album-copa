@@ -1,0 +1,1004 @@
+:root {
+  --ink: #101223;
+  --paper: #f7f1dc;
+  --paper-deep: #e7dcc0;
+  --blue: #192d8f;
+  --violet: #5b259f;
+  --cyan: #22c7d7;
+  --gold: #e3b341;
+  --red: #df2648;
+  --green: #00a76a;
+  --shadow: 0 28px 70px rgba(12, 15, 35, 0.34);
+  --album-height: 720px;
+  --sticker-width: 118px;
+}
+
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+  min-height: 100dvh;
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 16% 18%, rgba(34, 199, 215, 0.48), transparent 28%),
+    radial-gradient(circle at 85% 12%, rgba(227, 179, 65, 0.42), transparent 24%),
+    linear-gradient(135deg, #121348 0%, #192d8f 36%, #6b1d82 68%, #c81f4a 100%);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-image:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.14) 0 2px, transparent 2px 90px),
+    linear-gradient(60deg, rgba(255, 255, 255, 0.09) 0 1px, transparent 1px 72px);
+  opacity: 0.7;
+}
+
+button {
+  font: inherit;
+}
+
+.album-shell {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  width: min(100vw - 20px, 1320px);
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 10px 0;
+  gap: 4px;
+}
+
+.album-topbar,
+.album-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #fff;
+}
+
+.brand-lockup h1 {
+  margin: 2px 0 0;
+  font-size: clamp(1.45rem, 3vw, 3.2rem);
+  line-height: 0.92;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.edition,
+.section-label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.edition {
+  color: var(--gold);
+}
+
+.team-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.team-tab,
+.primary-action {
+  min-height: 34px;
+  border: 0;
+  border-radius: 999px;
+  padding: 0 12px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+  cursor: pointer;
+  transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+
+.team-tab:hover,
+.primary-action:hover,
+.nav-button:hover {
+  transform: translateY(-2px);
+}
+
+.team-tab.is-active {
+  color: var(--ink);
+  background: var(--gold);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.2);
+}
+
+.album-stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) 46px;
+  align-items: center;
+  min-height: var(--album-height);
+}
+
+.album-book {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: var(--album-height);
+  min-height: var(--album-height);
+  max-height: var(--album-height);
+  perspective: 1600px;
+  filter: drop-shadow(0 22px 50px rgba(0, 0, 0, 0.22));
+}
+
+.album-book.is-turning .page-right {
+  animation: pageTurn 620ms cubic-bezier(0.2, 0.72, 0.18, 1);
+}
+
+.book-spine {
+  position: absolute;
+  top: 18px;
+  bottom: 18px;
+  left: 50%;
+  z-index: 3;
+  width: 12px;
+  translate: -50% 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.26), rgba(255, 255, 255, 0.38), rgba(0, 0, 0, 0.18));
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.22);
+}
+
+.page {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: clamp(14px, 1.8vw, 24px);
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.08), transparent 10%),
+    linear-gradient(135deg, var(--paper), #fff8e7 58%, var(--paper-deep));
+}
+
+.page-left {
+  grid-template-rows: auto auto auto auto;
+  height: var(--album-height);
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-radius: 20px 0 0 20px;
+  transform-origin: right center;
+}
+
+.page-right {
+  grid-template-rows: auto auto auto;
+  height: var(--album-height);
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-radius: 0 20px 20px 0;
+  transform-origin: left center;
+}
+
+.page::before {
+  position: absolute;
+  inset: 16px;
+  content: "";
+  border: 2px solid rgba(25, 45, 143, 0.12);
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+.page-stripe {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 12px;
+  background: linear-gradient(180deg, var(--cyan), var(--gold), var(--red), var(--green));
+}
+
+.team-identity {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.team-code {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--team-primary), var(--team-secondary));
+  font-size: 1rem;
+  font-weight: 950;
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.18);
+}
+
+.team-identity h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4.4vw, 4rem);
+  line-height: 0.88;
+  text-transform: uppercase;
+}
+
+.section-label {
+  margin: 0 0 8px;
+  color: var(--team-primary);
+}
+
+.team-badge {
+  position: absolute;
+  right: clamp(22px, 4vw, 58px);
+  bottom: 90px;
+  display: grid;
+  place-items: center;
+  width: min(24vw, 170px);
+  aspect-ratio: 1;
+  border: 10px solid rgba(255, 255, 255, 0.72);
+  border-radius: 50%;
+  color: rgba(16, 18, 35, 0.08);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.12)),
+    linear-gradient(135deg, var(--team-primary), var(--team-secondary));
+  font-size: clamp(4rem, 13vw, 9rem);
+  font-weight: 950;
+}
+
+
+.team-summary {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(92px, 126px) minmax(0, 1fr);
+  gap: clamp(10px, 1.4vw, 16px);
+  align-items: start;
+  margin: clamp(8px, 1.1vw, 12px) 0 8px clamp(8px, 1.4vw, 16px);
+}
+
+.shield-slot {
+  position: relative;
+  display: grid;
+  width: 100%;
+  margin: 0;
+  border: 2px solid rgba(16, 18, 35, 0.2);
+  border-radius: 8px;
+  padding: 5px;
+  aspect-ratio: 3 / 4;
+  color: var(--ink);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.22)),
+    repeating-linear-gradient(135deg, rgba(25, 45, 143, 0.1) 0 7px, transparent 7px 14px);
+  box-shadow: 0 18px 28px rgba(18, 20, 42, 0.14);
+  cursor: pointer;
+}
+
+.shield-slot-number {
+  justify-self: start;
+  border-radius: 5px;
+  padding: 5px 7px;
+  color: #fff;
+  background: var(--team-primary);
+  font-size: 0.62rem;
+  font-weight: 950;
+}
+
+.shield-slot-emblem {
+  display: grid;
+  place-items: center;
+  width: 78%;
+  aspect-ratio: 1;
+  margin: 4px auto;
+  clip-path: polygon(50% 6%, 88% 18%, 82% 72%, 50% 94%, 18% 72%, 12% 18%);
+  color: #fff;
+  background:
+    radial-gradient(circle at 26% 20%, rgba(255, 255, 255, 0.34), transparent 24%),
+    linear-gradient(135deg, var(--team-primary), var(--team-secondary));
+  font-size: clamp(1.7rem, 5vw, 3.8rem);
+  font-weight: 950;
+}
+
+
+.shield-slot-emblem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sticker-image > div:not([hidden]) {
+  width: 100%;
+  height: 100%;
+}
+
+.sticker-placeholder {
+  align-content: center;
+  gap: 8px;
+  padding: 8px;
+  text-align: center;
+}
+
+.sticker-placeholder small {
+  max-width: 100%;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.shield-slot-label {
+  align-self: end;
+  overflow: hidden;
+  font-size: 0.58rem;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.team-info {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  border-left: 5px solid var(--team-primary);
+  padding: 2px 0 0 10px;
+}
+
+.team-info p {
+  max-width: 54ch;
+  margin: 0 0 8px;
+  font-size: clamp(0.78rem, 1vw, 0.95rem);
+  font-weight: 750;
+}
+
+.team-info dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0;
+}
+
+.team-info div {
+  min-width: 0;
+  border-radius: 8px;
+  padding: 7px;
+  color: #fff;
+  background: var(--ink);
+}
+
+.team-info dt {
+  color: var(--gold);
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.team-info dd {
+  margin: 4px 0 0;
+  font-weight: 850;
+}
+
+.stickers-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.stickers-header h3 {
+  margin: 0;
+  font-size: clamp(1.1rem, 2vw, 2rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.stickers-header span {
+  border-radius: 999px;
+  padding: 8px 12px;
+  color: #fff;
+  background: var(--team-primary);
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.sticker-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-height: 0;
+  height: auto;
+  align-content: start;
+  justify-content: start;
+  grid-auto-rows: auto;
+  grid-template-columns: repeat(auto-fill, minmax(var(--sticker-width), var(--sticker-width)));
+  gap: clamp(6px, 0.8vw, 10px);
+}
+
+.sticker-grid-left {
+  grid-template-columns: repeat(4, var(--sticker-width));
+  margin: 0 0 6px clamp(8px, 1.4vw, 16px);
+}
+
+.sticker-grid-left {
+  align-content: start;
+  grid-auto-rows: auto;
+}
+
+.sticker-grid-left .sticker-card {
+  align-self: start;
+  grid-template-rows: auto auto;
+}
+
+.sticker-grid-left .sticker-image {
+  aspect-ratio: 2 / 3;
+}
+
+.sticker-grid-left .sticker-image img {
+  object-fit: cover;
+}
+
+.sticker-card {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: auto auto;
+  width: var(--sticker-width);
+  min-width: var(--sticker-width);
+  min-height: 0;
+  border: 2px solid rgba(16, 18, 35, 0.18);
+  border-radius: 8px;
+  padding: 4px 4px 5px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.18)),
+    repeating-linear-gradient(135deg, rgba(25, 45, 143, 0.08) 0 7px, transparent 7px 14px);
+  box-shadow: 0 14px 22px rgba(18, 20, 42, 0.12);
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.sticker-card:hover,
+.sticker-card.is-featured {
+  transform: translateY(-8px) rotate(-1deg);
+  box-shadow: 0 24px 36px rgba(18, 20, 42, 0.2);
+}
+
+.sticker-card.is-featured::after {
+  position: absolute;
+  inset: -3px;
+  z-index: -1;
+  content: "";
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--gold), var(--cyan), var(--red));
+}
+
+.sticker-image {
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  min-height: 0;
+  aspect-ratio: 2 / 3;
+  background: #d8d0ba;
+}
+
+.sticker-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sticker-image::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(115deg, transparent 0 38%, rgba(255, 255, 255, 0.48) 45%, transparent 52% 100%);
+  translate: -120% 0;
+  transition: translate 420ms ease;
+}
+
+.sticker-card:hover .sticker-image::after,
+.sticker-card.is-featured .sticker-image::after {
+  translate: 120% 0;
+}
+
+.sticker-meta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 5px;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.sticker-number {
+  border-radius: 5px;
+  padding: 3px 4px;
+  color: #fff;
+  background: var(--team-primary);
+  font-size: 0.58rem;
+  font-weight: 950;
+}
+
+.sticker-name {
+  overflow: hidden;
+  font-size: clamp(0.55rem, 0.7vw, 0.72rem);
+  font-weight: 900;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.sticker-card-team-photo {
+  grid-column: span 2;
+  grid-row: auto;
+  width: calc((var(--sticker-width) * 2) + clamp(6px, 0.8vw, 10px));
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.22)),
+    linear-gradient(135deg, color-mix(in srgb, var(--team-primary) 20%, transparent), color-mix(in srgb, var(--team-secondary) 24%, transparent));
+}
+
+.sticker-card-team-photo .sticker-image {
+  aspect-ratio: 16 / 9;
+}
+
+
+.missing-sticker {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  align-content: center;
+  justify-items: center;
+  gap: 7px;
+  padding: 10px;
+  border: 2px dashed rgba(16, 18, 35, 0.34);
+  border-radius: 6px;
+  color: rgba(16, 18, 35, 0.72);
+  text-align: center;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.38)),
+    repeating-linear-gradient(135deg, rgba(16, 18, 35, 0.08) 0 8px, transparent 8px 16px);
+}
+
+.missing-sticker::before {
+  content: "";
+  display: block;
+  width: 44%;
+  aspect-ratio: 1;
+  border: 3px solid color-mix(in srgb, var(--team-primary) 55%, #fff);
+  border-radius: 50%;
+  background:
+    linear-gradient(90deg, transparent 46%, color-mix(in srgb, var(--team-primary) 55%, #fff) 46% 54%, transparent 54%),
+    linear-gradient(0deg, transparent 46%, color-mix(in srgb, var(--team-primary) 55%, #fff) 46% 54%, transparent 54%);
+  opacity: 0.78;
+}
+
+.missing-sticker span {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  border-radius: 5px;
+  padding: 4px 6px;
+  color: #fff;
+  background: var(--team-primary);
+  font-size: 0.68rem;
+  font-weight: 950;
+}
+
+.missing-sticker strong {
+  font-size: 0.78rem;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.missing-sticker small {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 0.62rem;
+  font-weight: 850;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.missing-team-photo::before {
+  width: 22%;
+}
+
+.placeholder-art {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: #fff;
+  background:
+    radial-gradient(circle at 25% 22%, rgba(255, 255, 255, 0.3), transparent 24%),
+    linear-gradient(135deg, var(--team-primary), var(--team-secondary));
+}
+
+.shield-placeholder {
+  clip-path: polygon(50% 6%, 88% 18%, 82% 72%, 50% 94%, 18% 72%, 12% 18%);
+  margin: 8%;
+  width: 84%;
+  height: 84%;
+}
+
+.placeholder-art span {
+  font-size: clamp(1.2rem, 2.8vw, 2.8rem);
+  font-weight: 950;
+}
+
+.team-photo-placeholder {
+  align-content: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.team-photo-placeholder::before {
+  content: "";
+  display: block;
+  width: 78%;
+  height: 26%;
+  margin: 0 auto;
+  border-radius: 999px 999px 18px 18px;
+  background:
+    radial-gradient(circle at 18% 55%, #fff 0 8%, transparent 9%),
+    radial-gradient(circle at 34% 44%, #fff 0 8%, transparent 9%),
+    radial-gradient(circle at 50% 54%, #fff 0 8%, transparent 9%),
+    radial-gradient(circle at 66% 44%, #fff 0 8%, transparent 9%),
+    radial-gradient(circle at 82% 55%, #fff 0 8%, transparent 9%);
+  box-shadow: inset 0 -18px 0 rgba(16, 18, 35, 0.2);
+}
+
+.team-photo-placeholder small {
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.58rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.sticker-role {
+  grid-column: span 2;
+  color: rgba(16, 18, 35, 0.66);
+  font-size: 0.52rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.page-number {
+  position: relative;
+  z-index: 2;
+  align-self: end;
+  justify-self: end;
+  color: rgba(16, 18, 35, 0.42);
+  font-weight: 900;
+}
+
+.page-left .page-number {
+  justify-self: start;
+}
+
+.nav-button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  aspect-ratio: 1;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28), 0 16px 30px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.nav-button span {
+  margin-top: -4px;
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.primary-action {
+  min-width: 142px;
+  background: var(--gold);
+  color: var(--ink);
+  font-weight: 900;
+}
+
+.progress-track {
+  overflow: hidden;
+  flex: 1;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.progress-track span {
+  display: block;
+  width: 33.33%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--cyan), var(--gold));
+  transition: width 240ms ease;
+}
+
+#pageStatus {
+  min-width: 108px;
+  margin: 0;
+  text-align: right;
+  font-weight: 850;
+}
+
+
+.sticker-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  place-items: center;
+  padding: 24px;
+}
+
+.sticker-modal.is-open {
+  display: grid;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 12, 30, 0.74);
+  backdrop-filter: blur(8px);
+}
+
+.modal-card {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(220px, 360px) minmax(180px, 280px);
+  gap: 18px;
+  align-items: center;
+  max-width: min(760px, calc(100vw - 36px));
+  border: 2px solid rgba(255, 255, 255, 0.38);
+  border-radius: 14px;
+  padding: 18px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(247, 241, 220, 0.92)),
+    linear-gradient(135deg, var(--team-primary), var(--team-secondary));
+  box-shadow: 0 34px 80px rgba(0, 0, 0, 0.42);
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  aspect-ratio: 1;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--ink);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-sticker-frame {
+  overflow: hidden;
+  border: 8px solid #fff;
+  border-radius: 12px;
+  aspect-ratio: 2 / 3;
+  background: #d8d0ba;
+  box-shadow: 0 18px 36px rgba(18, 20, 42, 0.24);
+}
+
+.modal-sticker-frame img,
+.modal-sticker-frame .placeholder-art,
+.modal-sticker-frame .missing-sticker {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-sticker-team-photo {
+  aspect-ratio: 16 / 9;
+  grid-column: 1 / -1;
+}
+
+.modal-sticker-info {
+  min-width: 0;
+  color: var(--ink);
+}
+
+.modal-sticker-info span {
+  display: inline-block;
+  border-radius: 7px;
+  padding: 7px 10px;
+  color: #fff;
+  background: var(--team-primary);
+  font-weight: 950;
+}
+
+.modal-sticker-info h2 {
+  margin: 14px 0 8px;
+  font-size: clamp(1.8rem, 4vw, 3.3rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.modal-sticker-info p {
+  margin: 0;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+@media (max-width: 680px) {
+  .modal-card {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-sticker-frame {
+    max-height: 68vh;
+  }
+}
+
+@keyframes pageTurn {
+  0% {
+    transform: rotateY(0deg);
+    filter: brightness(1);
+  }
+
+  45% {
+    transform: rotateY(-34deg);
+    filter: brightness(0.86);
+  }
+
+  100% {
+    transform: rotateY(0deg);
+    filter: brightness(1);
+  }
+}
+
+@media (max-width: 1100px) {
+  :root {
+    --album-height: 680px;
+    --sticker-width: 104px;
+  }
+}
+
+@media (max-width: 900px) {
+  .album-shell {
+    width: min(100vw - 10px, 900px);
+    padding: 6px 0;
+  }
+
+  .album-topbar,
+  .album-controls {
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .team-tabs {
+    justify-content: flex-end;
+  }
+
+  .album-stage {
+    grid-template-columns: 40px minmax(0, 1fr) 40px;
+    min-height: var(--album-height);
+  }
+
+  .album-book {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .team-summary {
+    grid-template-columns: 104px minmax(0, 1fr);
+  }
+
+  .sticker-grid {
+    grid-template-columns: repeat(auto-fill, minmax(var(--sticker-width), var(--sticker-width)));
+  }
+
+  .sticker-grid-left {
+    grid-template-columns: repeat(4, var(--sticker-width));
+  }
+}
+
+@media (max-width: 680px) {
+  :root {
+    --album-height: 640px;
+    --sticker-width: 88px;
+  }
+
+  .album-shell {
+    width: calc(100vw - 8px);
+    padding: 6px 0;
+  }
+
+  .brand-lockup h1 {
+    font-size: 1.25rem;
+  }
+
+  .team-summary {
+    grid-template-columns: 82px minmax(0, 1fr);
+  }
+
+  .team-info p {
+    display: none;
+  }
+
+  .sticker-grid,
+  .sticker-grid-left {
+    gap: 4px;
+  }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --album-height: 620px;
+    --sticker-width: 74px;
+  }
+
+  .album-stage {
+    grid-template-columns: 34px minmax(0, 1fr) 34px;
+    gap: 4px;
+  }
+
+  .nav-button {
+    position: absolute;
+    top: 46%;
+    z-index: 8;
+    width: 42px;
+  }
+
+  .nav-prev {
+    left: -4px;
+  }
+
+  .nav-next {
+    right: -4px;
+  }
+
+  .page {
+    padding: 8px;
+  }
+
+  .team-code {
+    width: 42px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+  }
+
+  .team-badge {
+    bottom: 70px;
+    width: 120px;
+  }
+
+  .team-summary {
+    grid-template-columns: 72px minmax(0, 1fr);
+    margin-left: 8px;
+  }
+
+  .sticker-grid {
+    gap: 4px;
+  }
+
+  .sticker-role {
+    display: none;
+  }
+}
