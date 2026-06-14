@@ -29,7 +29,7 @@ const teams = [
     coach: 1,
     order: [3, 4, 0, 2, 1, 3, 4, 0, 2, 1, 3, 4, 0],
   },
-/*  {
+  {
     name: "G5/E4",
     fullName: "Soluções SWIFT e Sisredex",
     code: "E4",
@@ -43,7 +43,7 @@ const teams = [
     players: 9,
     coach: 1,
     order: [2, 0, 4, 1, 3, 2, 0, 4, 1],
-  }, */
+  },
 ];
 
 const albumBook = document.querySelector("#albumBook");
