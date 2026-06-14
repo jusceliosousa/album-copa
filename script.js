@@ -221,7 +221,7 @@ function renderStickerCard(sticker, team, index) {
   `;
 }
 
-function renderTeam(shouldAnimate = true) {
+function renderTeam(shouldAnimate = true, direction = "next") {
   const team = teams[activeTeam];
   const stickers = teamStickers(team);
   const firstNumber = team.stickerStart;
@@ -270,9 +270,9 @@ function renderTeam(shouldAnimate = true) {
   renderTabs();
 
   if (shouldAnimate) {
-    albumBook.classList.remove("is-turning");
+    albumBook.classList.remove("is-turning-next", "is-turning-prev");
     window.requestAnimationFrame(() => {
-      albumBook.classList.add("is-turning");
+      albumBook.classList.add(direction === "prev" ? "is-turning-prev" : "is-turning-next");
     });
   }
 }
@@ -300,9 +300,10 @@ function closeModal() {
 }
 
 function setTeam(index) {
+  const direction = index < activeTeam ? "prev" : "next";
   activeTeam = (index + teams.length) % teams.length;
   featuredSticker = 0;
-  renderTeam();
+  renderTeam(true, direction);
 }
 
 document.querySelector("#prevTeam").addEventListener("click", () => {
@@ -349,3 +350,20 @@ document.addEventListener("keydown", (event) => {
 });
 
 renderTeam(false);
+
+let touchStartX = 0;
+let touchStartY = 0;
+
+document.addEventListener("touchstart", (e) => {
+  touchStartX = e.changedTouches[0].clientX;
+  touchStartY = e.changedTouches[0].clientY;
+}, { passive: true });
+
+document.addEventListener("touchend", (e) => {
+  if (stickerModal.classList.contains("is-open")) return;
+  const deltaX = e.changedTouches[0].clientX - touchStartX;
+  const deltaY = e.changedTouches[0].clientY - touchStartY;
+  if (Math.abs(deltaX) < 50 || Math.abs(deltaX) < Math.abs(deltaY)) return;
+  if (deltaX < 0) setTeam(activeTeam + 1);
+  else setTeam(activeTeam - 1);
+}, { passive: true });
